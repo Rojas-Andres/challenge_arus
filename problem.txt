@@ -1,0 +1,30 @@
+
+Empresa de tecnologia , donde el servicio que se va a proveer a los clientes es
+plataforma es lo que le permite a los clientes es que ellos se den cuenta que todos los servidores que ellos tengan esten funcionando correctamente, que permite hacer la plataforma , permite ingresar a la plataforma con un usuario y contraseña
+cuando se encuentra en la plataforma ingresar servidores , cuando ingrese servidores el sistema debe de pedir los datos
+
+ip del servidor.
+nombre del servidor.
+cliente al que pertenece.
+
+Crear clientes  -> pedir el nombre , nit del cliente. 
+
+Gestionar clientes y gestionar servidores .
+
+Gestionar los servicios de los servidores , en un servidor con ip (10.0.0 )-> una base de datos gestionar el servicio y monitoriear el servicio de base de datos , cuando la base de datos este a un limite mostrar a la base de datos subir a la base de datos
+
+En el servidor debe de aparecer una opcion que se dice agregar servicio ->
+
+Nombre. 
+Capacidad.
+Porcentaje o umbral en el cual va a estar alertado.
+
+Cosas a tener en cuenta.
+
+-> Contraseña encriptada, informacion sensible.
+
+Plus si montamos la base de datos en un contenedor ->
+Montar la aplicacion en otro contenedor( Backend ).
+Montar el frontend en otro contenedor.
+
+Boostrap -> Usar boostrap
