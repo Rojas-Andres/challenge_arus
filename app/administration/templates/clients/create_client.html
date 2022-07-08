@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p>Su cuenta no tiene acceso a esta página. Para proceder,
+    inicie sesión con una cuenta que tenga acceso.</p>
+{% else %}
+<p>Inicia sesión para ver esta página.</p>
+{% endif %}
+{% endif %}
+<form>
+    <div class="mb-3">
+        <label for="nombre_cliente" class="form-label">Nombre Cliente</label>
+        <input type="text" class="form-control" id="nameClient">
+    </div>
+    <div class="mb-3">
+        <label for="nit" class="form-label">Nit</label>
+        <input type="text" class="form-control" id="nit">
+    </div>
+    <button type="submit" class="btn btn-primary">Crear cliente</button>
+</form>
+
+
+{% endblock %}

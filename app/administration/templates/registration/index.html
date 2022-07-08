@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title%}Inicio{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<br>
+<p>Bienvenido : {{ user.get_username }}</p>
+<ul>
+    <li><a class="btn btn-primary" href="{% url 'clients'%}">Gestionar clientes</a></li>
+
+    <li><a class="btn btn-primary" href="">Gestionar servidores</a></li>
+
+</ul>
+{% endif %}
+{% endblock %}
