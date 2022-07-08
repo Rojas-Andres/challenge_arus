@@ -14,14 +14,26 @@
 <p>Inicia sesión para ver esta página.</p>
 {% endif %}
 {% endif %}
-<form>
+{% if 'msj' in context %}
+<h1></h1>
+<div class="alert alert-{{context.alert}} alert-dismissible fade show" role="alert">
+    <strong>{{context.msj}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+{%endif%}
+<form method="POST" action="{% url 'create_client' %}" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="mb-3">
         <label for="nombre_cliente" class="form-label">Nombre Cliente</label>
-        <input type="text" class="form-control" id="nameClient">
+        <input type="text" name="nameClient" class="form-control" id="nameClient">
     </div>
     <div class="mb-3">
         <label for="nit" class="form-label">Nit</label>
-        <input type="text" class="form-control" id="nit">
+        <input type="text" name="nit" class="form-control" id="nit">
     </div>
     <button type="submit" class="btn btn-primary">Crear cliente</button>
 </form>
