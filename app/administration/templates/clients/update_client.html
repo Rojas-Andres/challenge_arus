@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p>Su cuenta no tiene acceso a esta página. Para proceder,
+    inicie sesión con una cuenta que tenga acceso.</p>
+{% else %}
+<p>Inicia sesión para ver esta página.</p>
+{% endif %}
+{% endif %}
+{% if msj %}
+<h1></h1>
+<div class="alert alert-{{alert}} alert-dismissible fade show" role="alert">
+    <strong>{{msj}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{{data}}
+<h3>Actualizar Cliente</h3>
+<form method="POST" action="{% url 'update_client' id_client=id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="nombre_cliente" class="form-label">Nombre Cliente</label>
+        <input type="text" name="nameClient" value="{{nameClient}}" class="form-control" id="nameClient">
+    </div>
+    <div class="mb-3">
+        <label for="nit" class="form-label">Nit</label>
+        <input type="text" name="nit" value="{{nit}}" class="form-control" id="nit">
+    </div>
+    <button type="submit" class="btn btn-primary">Actualizar Cliente</button>
+</form>
+
+
+{% endblock %}
