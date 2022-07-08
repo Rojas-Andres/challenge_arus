@@ -76,3 +76,12 @@ def update_client(request, id_client=None):
     client.save()
 
     return redirect("show_clients")
+
+
+@login_required
+@api_view(["GET"])
+def delete_client(request, id_client=None):
+    client = Client.objects.filter(id=id_client).first()
+    if request.method == "GET":
+        client.delete()
+        return redirect("show_clients")

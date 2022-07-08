@@ -30,22 +30,11 @@
             <td name="nombre">{{rec.nombre}}</td>
             <td name="nit">{{rec.nit}}</td>
             <td><a href="{% url 'update_client' id_client=rec.id %} ">Actualizar</a></td>
-            <td><a href="">Eliminar</a></td>
+            <td><a href="{% url 'delete_client' id_client=rec.id %} ">Eliminar</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-{% endblock %}
-{% block script %}
-<script>
-    function actualizarCliente(id) {
-        $.ajax({
-            type: 'PUT',
-            url: "",
-            data: {
-                "id": id
-            }
-        })
-    }
-</script>
+<a href="/management/client/">Regresar</a>
+
 {% endblock %}
