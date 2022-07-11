@@ -38,6 +38,13 @@ def create_server(request):
         context["alert"] = "danger"
         return render(request, "servers/create_server.html", {"context": context})
 
+    # Validar que no exista otra ip
+    server = Server.objects.filter(ip_server=ip)
+    if server:
+        context["msj"] = f"Ya se encuentra un servidor con esa ip"
+        context["alert"] = "danger"
+        return render(request, "servers/create_server.html", {"context": context})
+
     client = Client.objects.filter(nit=nit).get()
     new_server = Server.objects.create(
         name_server=nombre, ip_server=ip, client_id=client.id
