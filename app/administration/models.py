@@ -15,10 +15,12 @@ class Client(models.Model):
 
 
 class Server(models.Model):
-    ip_server = models.CharField(verbose_name="Ip servidor", max_length=255)
+    ip_server = models.CharField(
+        verbose_name="Ip servidor", max_length=255, unique=True
+    )
     name_server = models.CharField(verbose_name="Nombre Servidor", max_length=255)
 
-    cliente = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Server"

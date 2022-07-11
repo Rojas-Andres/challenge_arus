@@ -29,38 +29,24 @@ def create_server(request):
     context = {}
     if request.method == "GET":
         return render(request, "servers/create_server.html")
-
     nit = request.POST["nit"]
     nombre = request.POST["nameServer"]
     ip = request.POST["ip"]
     validate_ip = validate_ip_address(ip)
-    print(validate_ip)
-    client = Client.objects.filter(nit=nit)
+    if not validate_ip:
+        context["msj"] = f"La ip {ip} no es valida"
+        context["alert"] = "danger"
+        return render(request, "servers/create_server.html", {"context": context})
 
+    client = Client.objects.filter(nit=nit).get()
+    new_server = Server.objects.create(
+        name_server=nombre, ip_server=ip, client_id=client.id
+    )
+    new_server.save()
     context["msj"] = "Cliente creado correctamente"
     context["alert"] = "success"
 
     return render(request, "clients/create_client.html", {"context": context})
-
-    #     if client:
-    #         context[
-    #             "msj"
-    #         ] = "Ya se encuentra un cliente con ese NIT, por lo tanto no se crea"
-    #         context["alert"] = "danger"
-    #         return render(request, "clients/create_client.html", {"context": context})
-
-    #     if len(nit) > 9:
-    #         context["msj"] = "El nit no puede tener mas de 9 digitos"
-    #         context["alert"] = "danger"
-    #         return render(request, "clients/create_client.html", {"context": context})
-
-    #     new_client = Client.objects.create(name_client=nombre, nit=nit)
-    #     new_client.save()
-
-    # context["msj"] = "Cliente creado correctamente"
-    # context["alert"] = "success"
-
-    # return render(request, "clients/create_client.html", {"context": context})
 
 
 # @login_required
