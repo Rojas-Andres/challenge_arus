@@ -2,8 +2,9 @@ from django.template import RequestContext
 from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.decorators import api_view
-from administration.models import Server
+from administration.models import Server, Client
 from django.contrib.auth.decorators import login_required
+from administration.utils import validate_ip_address
 
 
 @login_required
@@ -29,29 +30,37 @@ def create_server(request):
     if request.method == "GET":
         return render(request, "servers/create_server.html")
 
+    nit = request.POST["nit"]
+    nombre = request.POST["nameServer"]
+    ip = request.POST["ip"]
+    validate_ip = validate_ip_address(ip)
+    print(validate_ip)
+    client = Client.objects.filter(nit=nit)
 
-#     nit = request.POST["nit"]
-#     nombre = request.POST["nameClient"]
-#     client = Client.objects.filter(nit=nit)
-#     if client:
-#         context[
-#             "msj"
-#         ] = "Ya se encuentra un cliente con ese NIT, por lo tanto no se crea"
-#         context["alert"] = "danger"
-#         return render(request, "clients/create_client.html", {"context": context})
+    context["msj"] = "Cliente creado correctamente"
+    context["alert"] = "success"
 
-#     if len(nit) > 9:
-#         context["msj"] = "El nit no puede tener mas de 9 digitos"
-#         context["alert"] = "danger"
-#         return render(request, "clients/create_client.html", {"context": context})
+    return render(request, "clients/create_client.html", {"context": context})
 
-#     new_client = Client.objects.create(name_client=nombre, nit=nit)
-#     new_client.save()
+    #     if client:
+    #         context[
+    #             "msj"
+    #         ] = "Ya se encuentra un cliente con ese NIT, por lo tanto no se crea"
+    #         context["alert"] = "danger"
+    #         return render(request, "clients/create_client.html", {"context": context})
 
-#     context["msj"] = "Cliente creado correctamente"
-#     context["alert"] = "success"
+    #     if len(nit) > 9:
+    #         context["msj"] = "El nit no puede tener mas de 9 digitos"
+    #         context["alert"] = "danger"
+    #         return render(request, "clients/create_client.html", {"context": context})
 
-#     return render(request, "clients/create_client.html", {"context": context})
+    #     new_client = Client.objects.create(name_client=nombre, nit=nit)
+    #     new_client.save()
+
+    # context["msj"] = "Cliente creado correctamente"
+    # context["alert"] = "success"
+
+    # return render(request, "clients/create_client.html", {"context": context})
 
 
 # @login_required
