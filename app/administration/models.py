@@ -29,3 +29,19 @@ class Server(models.Model):
     @classmethod
     def get_by_id(cls, uid):
         return Server.objects.get(id=uid)
+
+
+class Service(models.Model):
+    name_service = models.CharField(verbose_name="Nombre servicio", max_length=255)
+    capacity = models.IntegerField()
+    percent = models.IntegerField(default=0)
+
+    server = models.ForeignKey(Server, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
+
+    @classmethod
+    def get_by_id(cls, uid):
+        return Service.objects.get(id=uid)

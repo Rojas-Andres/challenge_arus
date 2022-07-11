@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.decorators import api_view
 from administration.models import Server, Client
 from django.contrib.auth.decorators import login_required
-from administration.utils import validate_ip_address, server_filter
+from administration.utils import validate_ip_address
 
 
 @login_required
@@ -15,7 +15,7 @@ def servers(request):
 
 @login_required
 @api_view(["GET"])
-def show_servers(request):
+def show_services(request):
     servers = Server.objects.all().values(
         "name_server", "ip_server", "client__name_client", "id"
     )
@@ -33,7 +33,7 @@ def show_servers(request):
 
 @login_required
 @api_view(["GET", "POST"])
-def create_server(request):
+def create_service(request):
     context = {}
     if request.method == "GET":
         return render(request, "servers/create_server.html")
@@ -64,58 +64,24 @@ def create_server(request):
     return render(request, "clients/create_client.html", {"context": context})
 
 
-@login_required
-@api_view(["GET", "POST"])
-def update_server(request, id_server=None):
-    context = {}
-    data_last_server = server_filter(id_server)
-    if request.method == "GET":
+# @login_required
+# @api_view(["GET", "POST"])
+# def update_client(request, id_client=None):
+#     client = Client.objects.filter(id=id_client).first()
+#     data = {"nameClient": client.name_client, "nit": client.nit, "id": client.id}
+#     if request.method == "GET":
+#         return render(
+#             request,
+#             "clients/update_client.html",
+#             data,
+#         )
+#     nit = request.POST["nit"]
+#     if len(nit) > 9:
+#         data["msj"] = "El nit no puede tener mas de 9 digitos"
+#         data["alert"] = "danger"
+#         return render(request, "clients/update_client.html", data)
+#     client.nit = nit
+#     client.name_client = request.POST["nameClient"]
+#     client.save()
 
-        return render(
-            request,
-            "servers/update_server.html",
-            data_last_server,
-        )
-
-    server = Server.objects.filter(id=id_server).get()
-    # Validar ip
-    ip = request.POST["ip"]
-    validate_ip = validate_ip_address(ip)
-    if not validate_ip:
-        data_last_server["msj"] = f"La ip {ip} no es valida"
-        data_last_server["alert"] = "danger"
-        return render(
-            request,
-            "servers/update_server.html",
-            data_last_server,
-        )
-
-    # Validar que la ip que va actualizar no exista
-
-    if ip != server.ip_server:
-        server_ip = Server.objects.filter(ip_server=ip)
-        if server_ip:
-            data_last_server["msj"] = f"Ya se encuentra un servidor con esa ip"
-            data_last_server["alert"] = "danger"
-            return render(
-                request,
-                "servers/update_server.html",
-                data_last_server,
-            )
-    nit = request.POST["nit"]
-    client = Client.objects.filter(nit=nit).get()
-    server.name_server = request.POST["nameServer"]
-    server.ip_server = ip
-    server.client_id = client.id
-    server.save()
-
-    return redirect("show_servers")
-
-
-@login_required
-@api_view(["GET"])
-def delete_server(request, id_server=None):
-    server = Server.objects.filter(id=id_server).first()
-    if request.method == "GET":
-        server.delete()
-        return redirect("show_servers")
+#     return redirect("show_clients")

@@ -14,38 +14,42 @@
 <p>Inicia sesión para ver esta página.</p>
 {% endif %}
 {% endif %}
-{% if 'msj' in context %}
+{% if msj %}
 <h1></h1>
-<div class="alert alert-{{context.alert}} alert-dismissible fade show" role="alert">
-    <strong>{{context.msj}}</strong>
+<div class="alert alert-{{alert}} alert-dismissible fade show" role="alert">
+    <strong>{{msj}}</strong>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-{%endif%}
-<form method="POST" action="{% url 'create_server' %}" enctype="multipart/form-data">
+{% endif %}
+{{data}}
+<h3>Actualizar Servidor</h3>
+<form method="POST" action="{% url 'update_server' id_server=id %}" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
         <label for="nombre_servidor" class="form-label">Nombre servidor</label>
-        <input type="text" name="nameServer" class="form-control" id="nameServer" required>
+        <input type="text" name="nameServer" class="form-control" value="{{nameServer}}" id="nameServer" required>
     </div>
     <div class="mb-3">
         <label for="ip" class="form-label">IP Servidor</label>
-        <input type="text" name="ip" class="form-control" id="ip" required>
+        <input type="text" name="ip" class="form-control" value="{{ip_server}}" id="ip" required>
     </div>
     <div class="mb-3">
         <label for="nit" class="form-label">Nit cliente</label>
-        <input type="text" name="nit" class="form-control" id="nit" required>
+        <input type="text" name="nit" class="form-control" value="{{nit}}" id="nit" required>
     </div>
     <div class="mb-3">
         <label for="name" class="form-label">Nombre Cliente</label>
-        <input type="text" name="nameClient" class="form-control" id="nameClient" readonly required>
+        <input type="text" name="nameClient" class="form-control" value="{{nameClient}}" id="nameClient" readonly
+            required>
     </div>
-    <button type="submit" class="btn btn-primary" id="createServer">Crear Servidor</button>
+    <button type="submit" class="btn btn-primary" id="updateServer">Actualizar servidor</button>
 </form>
-<a href="/management/server/">Regresar</a>
 
+<a href="/management/server/">Regresar</a>
 {% endblock %}
+
 {% block script %}
 <script>
 
@@ -66,13 +70,13 @@
             }
         })
     })
-    $("#createServer").click(function (e) {
+    $("#updateServer").click(function (e) {
 
         var nameClient = document.getElementById("nameClient")
 
         if (nameClient.value.length == 0) {
             e.preventDefault();
-            alert("No se creara el servidor porque no se encontro un cliente")
+            alert("No se actualizara el servidor porque no se encontro un cliente")
         }
 
     })
