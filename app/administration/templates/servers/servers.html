@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+    <li>
+        <a href="{% url 'create_server'%}">Crear servidor</a>
+    </li>
+    <li>
+        <a href="{% url 'show_servers'%}">Mostrar servidores</a>
+    </li>
+</ul>
+
+{% endblock %}

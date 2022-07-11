@@ -6,10 +6,6 @@ from administration.models import Client
 from django.contrib.auth.decorators import login_required
 
 
-def Index(request):
-    return render(request, "registration/index.html", {})
-
-
 @login_required
 @api_view(["GET"])
 def clients(request):
