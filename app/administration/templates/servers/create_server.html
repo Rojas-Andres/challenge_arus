@@ -22,25 +22,59 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
-
 {%endif%}
 <form method="POST" action="{% url 'create_server' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
         <label for="nombre_servidor" class="form-label">Nombre servidor</label>
-        <input type="text" name="nameServer" class="form-control" id="nameServer">
+        <input type="text" name="nameServer" class="form-control" id="nameServer" required>
     </div>
     <div class="mb-3">
         <label for="ip" class="form-label">IP Servidor</label>
-        <input type="text" name="ip" class="form-control" id="ip">
+        <input type="text" name="ip" class="form-control" id="ip" required>
     </div>
     <div class="mb-3">
-        <label for="ip" class="form-label">Cliente</label>
-        <input type="text" name="cliente" class="form-control" id="cliente">
+        <label for="nit" class="form-label">Nit cliente</label>
+        <input type="text" name="nit" class="form-control" id="nit" required>
     </div>
-    <button type="submit" class="btn btn-primary">Crear Servidor</button>
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre Cliente</label>
+        <input type="text" name="nameClient" class="form-control" id="nameClient" readonly required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="createServer">Crear Servidor</button>
 </form>
 <a href="/management/server/">Regresar</a>
 
+{% endblock %}
+{% block script %}
+<script>
+
+    $("#nit").change(function (e) {
+        e.preventDefault();
+        var nit = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'validate_client' %}",
+            data: { "nit": nit },
+            success: function (response) {
+                $('#nameClient').val(response["nombre_cliente"])
+
+            },
+            error: function (response) {
+                $('#nameClient').val("")
+                alert('No se encontró una empresa con el nit ' + nit + '. Por favor verifique!')
+            }
+        })
+    })
+    $("#createServer").click(function (e) {
+
+        var nameClient = document.getElementById("nameClient")
+
+        if (nameClient.value.length == 0) {
+            e.preventDefault();
+            alert("No se creara el servidor porque no se encontro un cliente")
+        }
+
+    })
+</script>
 {% endblock %}

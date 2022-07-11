@@ -4,12 +4,25 @@ from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.decorators import api_view
 from administration.models import Client
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 
 @login_required
 @api_view(["GET"])
 def clients(request):
     return render(request, "clients/clients.html")
+
+
+def validate_client(request):
+    if request.is_ajax and request.method == "GET":
+        nit = request.GET.get("nit", None)
+
+        client: Client = Client.objects.get(nit=nit)
+
+        if not client:
+            return JsonResponse({}, status=400)
+
+        return JsonResponse({"nombre_cliente": client.name_client}, status=200)
 
 
 @login_required
