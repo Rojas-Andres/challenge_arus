@@ -50,8 +50,13 @@ IP address 192.168.1.20 is valid. la funcion retorna True
 # Entrar a pgadmin 
 
 
-# Diagramas 
+## Diagramas
 
+![](imagenes/1.PNG)
+
+![](imagenes/2.PNG)
+
+![](imagenes/3.PNG)
 
 # Ejecutar migraciones en el docker
     docker-compose run app python3 manage.py makemigrations
