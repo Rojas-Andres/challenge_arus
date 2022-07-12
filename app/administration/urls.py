@@ -27,4 +27,5 @@ urlpatterns = [
     path("get/ajax/validate_server", server.validate_server, name="validate_server"),
     # Services
     path("create_service/", service.create_service, name="create_service"),
+    path("show_all_service/", service.show_all_service, name="show_all_service"),
 ]

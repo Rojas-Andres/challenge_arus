@@ -30,9 +30,6 @@ def show_service_by_server(request):
         return JsonResponse({"data": serializer.data})
 
 
-# Falta crear la peticion para validar si la ip del servidor existe
-
-
 @login_required
 @api_view(["GET", "POST"])
 def create_service(request):
@@ -55,6 +52,25 @@ def create_service(request):
     context["alert"] = "success"
 
     return render(request, "services/create_service.html", {"context": context})
+
+
+@login_required
+@api_view(["GET"])
+def show_all_service(request):
+    services = Service.objects.all().values(
+        "name_service", "capacity", "percent", "id", "server__ip_server"
+    )
+    services = [
+        {
+            "nombre": i["name_service"],
+            "capacidad": i["capacity"],
+            "porcentaje": i["percent"],
+            "id": i["id"],
+            "ip_server": i["server__ip_server"],
+        }
+        for i in services
+    ]
+    return render(request, "services/show_all_services.html", {"data": services})
 
 
 # # @login_required
