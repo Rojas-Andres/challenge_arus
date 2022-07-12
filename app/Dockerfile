@@ -11,6 +11,6 @@ COPY requirements.txt ./
 
 RUN pip install -r requirements.txt
 COPY . .
-COPY .env ./
+
 EXPOSE 3000
 CMD [ "python3","./manage.py", "runserver", "0:3000" ]

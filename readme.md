@@ -33,8 +33,7 @@ IP address 10.260.10.300 ,la funcion retorna False
 IP address 192.168.1.20 is valid. la funcion retorna True 
 
 # Se crea un envio de correo en el caso de que el uso del servicio supere el umbral , para ello seguir las siguientes instrucciones
-    - Crear un archivo .env en la carpeta app/ , esta seria la ruta relativa app\.env
-    - Dentro de ese archivo configurar el correo y la contraseña de la siguiente manera
+    - Modificar el archivo .env y crear las variables de correo y contraseña de la siguiente manera
     email=######@####.###
     password=#####
 
