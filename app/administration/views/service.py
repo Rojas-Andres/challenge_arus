@@ -16,7 +16,7 @@ def show_service_by_server(request):
         context = {}
         return render(
             request,
-            "service/show_service_by_server.html",
+            "services/show_service_by_server.html",
         )
     else:
         ip_server = request.data["ip_server"]
@@ -33,37 +33,28 @@ def show_service_by_server(request):
 # Falta crear la peticion para validar si la ip del servidor existe
 
 
-# @login_required
-# @api_view(["GET", "POST"])
-# def create_service(request):
-#     context = {}
-#     if request.method == "GET":
-#         return render(request, "servers/create_server.html")
-#     nit = request.POST["nit"]
-#     nombre = request.POST["nameServer"]
-#     ip = request.POST["ip"]
-#     validate_ip = validate_ip_address(ip)
-#     if not validate_ip:
-#         context["msj"] = f"La ip {ip} no es valida"
-#         context["alert"] = "danger"
-#         return render(request, "servers/create_server.html", {"context": context})
+@login_required
+@api_view(["GET", "POST"])
+def create_service(request):
+    context = {}
+    if request.method == "GET":
+        return render(request, "services/create_service.html")
+    name_service = request.POST["nameService"]
+    capacity = request.POST["capacity"]
+    percent = request.POST["percent"]
+    ip_server = request.POST["ipServer"]
+    server = Server.objects.filter(ip_server=ip_server)
+    new_service = Service.objects.create(
+        name_service=name_service,
+        capacity=capacity,
+        percent=percent,
+        server_id=server.get().id,
+    )
+    new_service.save()
+    context["msj"] = "Servicio creado correctamente"
+    context["alert"] = "success"
 
-#     # Validar que no exista otra ip
-#     server = Server.objects.filter(ip_server=ip)
-#     if server:
-#         context["msj"] = f"Ya se encuentra un servidor con esa ip"
-#         context["alert"] = "danger"
-#         return render(request, "servers/create_server.html", {"context": context})
-
-#     client = Client.objects.filter(nit=nit).get()
-#     new_server = Server.objects.create(
-#         name_server=nombre, ip_server=ip, client_id=client.id
-#     )
-#     new_server.save()
-#     context["msj"] = "Cliente creado correctamente"
-#     context["alert"] = "success"
-
-#     return render(request, "clients/create_client.html", {"context": context})
+    return render(request, "services/create_service.html", {"context": context})
 
 
 # # @login_required

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p>Su cuenta no tiene acceso a esta página. Para proceder,
+    inicie sesión con una cuenta que tenga acceso.</p>
+{% else %}
+<p>Inicia sesión para ver esta página.</p>
+{% endif %}
+{% endif %}
+{% if 'msj' in context %}
+<h1></h1>
+<div class="alert alert-{{context.alert}} alert-dismissible fade show" role="alert">
+    <strong>{{context.msj}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{%endif%}
+<form method="POST" action="{% url 'create_service' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="nombre_servidor" class="form-label">Nombre servicio</label>
+        <input type="text" name="nameService" class="form-control" id="nameService" required>
+    </div>
+    <div class="mb-3">
+        <label for="ip" class="form-label">Capacidad</label>
+        <input type="number" name="capacity" class="form-control" id="capacity" required>
+    </div>
+    <div class="mb-3">
+        <label for="percent" class="form-label">Porcentaje alerta</label>
+        <input type="number" name="percent" class="form-control" id="percent" required>
+    </div>
+    <div class="mb-3">
+        <label for="ipServer" class="form-label">Ip Servidor</label>
+        <input type="text" name="ipServer" class="form-control" id="ipServer" required>
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre servidor</label>
+        <input type="text" name="nameServer" class="form-control" id="nameServer" readonly required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="createService">Crear servicio</button>
+</form>
+<a href="/management/server/">Regresar</a>
+
+{% endblock %}
+{% block script %}
+<script>
+    $("#ipServer").change(function (e) {
+        e.preventDefault();
+        var ipserver = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'validate_server' %}",
+            data: { "ipServer": ipserver },
+            success: function (response) {
+                $('#nameServer').val(response["nombre_servidor"])
+
+            },
+            error: function (response) {
+                $('#nameServer').val("")
+                alert('No se encontró la direccion IP ' + ipserver + '. Por favor verifique!')
+            }
+        })
+    })
+
+    $("#createService").click(function (e) {
+
+        var nameServer = document.getElementById("nameServer")
+        if (nameServer.value.length == 0) {
+            e.preventDefault();
+            alert("No se encontro el servidor por lo tanto no se crea el servicio")
+        }
+
+    })
+</script>
+{% endblock %}

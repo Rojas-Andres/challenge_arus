@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<h3>Servidor</h3>
 <ul>
     <li>
         <a href="{% url 'create_server'%}">Crear servidor</a>
@@ -8,9 +9,17 @@
         <a href="{% url 'show_servers'%}">Mostrar servidores</a>
     </li>
 
+</ul>
+
+<h3>Servicio de servidor</h3>
+<ul>
+
+    <li>
+        <a href="{% url 'create_service'%}">Crear Servicio</a>
+    </li>
+
     <li>
         <a href="{% url 'show_service_by_server'%}">Mostrar servicios por servidor</a>
     </li>
 </ul>
-
 {% endblock %}

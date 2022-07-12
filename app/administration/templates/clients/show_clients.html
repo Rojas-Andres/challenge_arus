@@ -20,6 +20,7 @@
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">NIT</th>
+            <th scope="col">Correo</th>
             <th scope="col">Actualizar</th>
             <th scope="col">Eliminar</th>
         </tr>
@@ -29,6 +30,7 @@
         <tr id={{rec.id}} scope="row">
             <td name="nombre">{{rec.nombre}}</td>
             <td name="nit">{{rec.nit}}</td>
+            <td name="nit">{{rec.correo}}</td>
             <td><a href="{% url 'update_client' id_client=rec.id %} ">Actualizar</a></td>
             <td><a href="{% url 'delete_client' id_client=rec.id %} ">Eliminar</a></td>
         </tr>
