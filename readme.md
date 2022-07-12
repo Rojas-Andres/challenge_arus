@@ -48,7 +48,13 @@ IP address 192.168.1.20 is valid. la funcion retorna True
 
 # Entrar a pgadmin 
 
+   ![](imagenes/conexion_pgadmin/login.png)
+   
+   ![](imagenes/conexion_pgadmin/conexion_server.png)
 
+   ![](imagenes/conexion_pgadmin/db_1.png)
+
+   ![](imagenes/conexion_pgadmin/db_2.png)
 ## Diagramas
 
 ![](imagenes/1.PNG)
