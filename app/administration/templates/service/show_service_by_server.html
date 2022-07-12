@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p>Su cuenta no tiene acceso a esta página. Para proceder,
+    inicie sesión con una cuenta que tenga acceso.</p>
+{% else %}
+<p>Inicia sesión para ver esta página.</p>
+{% endif %}
+{% endif %}
+{% if 'msj' in context %}
+<h1></h1>
+<div class="alert alert-{{context.alert}} alert-dismissible fade show" role="alert">
+    <strong>{{context.msj}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{%endif%}
+<h3>Servicios por servidor </h3>
+<form id="search_server" method="POST" action="{% url 'show_service_by_server' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Ip servidor</label>
+        <input type="text" name="ipServer" class="form-control" id="ipServer">
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre servidor</label>
+        <input type="text" name="nameServer" class="form-control" id="nameServer" readonly required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="searchServer">Buscar servicios</button>
+</form>
+<div class="row">
+    <table id="data_table" class="table table-bordered" style="display: none; width:100%">
+        <thead>
+            <tr>
+                <th>Nombre servicio</th>
+                <th>Capacidad</th>
+                <th>Porcentaje</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<a href="/management/server/">Regresar</a>
+
+{% endblock %}
+{% block script %}
+<script>
+
+    $("#ipServer").change(function (e) {
+        e.preventDefault();
+        var ipserver = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'validate_server' %}",
+            data: { "ipServer": ipserver },
+            success: function (response) {
+                $('#nameServer').val(response["nombre_servidor"])
+
+            },
+            error: function (response) {
+                $('#nameServer').val("")
+                alert('No se encontró la direccion IP ' + ipserver + '. Por favor verifique!')
+            }
+        })
+    })
+    $("#searchServer").click(function (e) {
+        e.preventDefault();
+        var ipServer = document.getElementById("ipServer")
+        var nameServer = document.getElementById("nameServer")
+        console.log("entre mor", ipServer.value.length)
+        if (nameServer.value.length == 0) {
+            alert("No se encontro servicios para ese servidor")
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'show_service_by_server' %}",
+                data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "ip_server": ipServer.value
+                },
+                beforeSend: function () {
+                    console.log("Enviando request...");
+                },
+                success: function (response) {
+                    pintarTablaServicios(response.data);
+                },
+
+                error: function (response) {
+                    data = JSON.parse(response["data"]);
+                    $("#btn_marcar").css({ "visibility": "visible" });
+
+                    {
+                        $('#id').val("")
+                        alert('No se encontró ' + id + '. Por favor verifique!')
+                    }
+
+                }
+            });
+        }
+    })
+    function pintarTablaServicios(data) {
+        $('#data_table').DataTable().destroy();
+        $('#data_table').show();
+        $('#data_table').DataTable({
+            dom: 'B<"clear">rtip',
+            pageLength: 6,
+            buttons: {
+                name: 'primary',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf'
+                ]
+            },
+            "data": data,
+            "columns": [
+                { "data": "name_service" },
+                { "data": "capacity" },
+                { "data": "percent" }
+
+            ], select: true,
+            lengthMenu: [
+                [15, 30, 45, -1],
+                ["15 Rows", "30 Rows", "45 Rows", "Todo"]
+            ],
+            language: {
+                searchPlaceholder: "Buscar servidores",
+                infoEmpty: "La tabla no tiene registros",
+                zeroRecords: "Uppps, No tenemos resultados para tu busqueda obtener los servidores",
+            },
+        });
+
+    }
+
+</script>
+{% endblock %}

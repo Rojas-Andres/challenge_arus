@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from administration.models import Server, Client
 from django.contrib.auth.decorators import login_required
 from administration.utils import validate_ip_address, server_filter
+from django.http import JsonResponse
 
 
 @login_required
@@ -62,6 +63,18 @@ def create_server(request):
     context["alert"] = "success"
 
     return render(request, "clients/create_client.html", {"context": context})
+
+
+def validate_server(request):
+    if request.is_ajax and request.method == "GET":
+        ip_server = request.GET.get("ipServer", None)
+
+        server: Server = Server.objects.filter(ip_server=ip_server)
+
+        if not server:
+            return JsonResponse({}, status=400)
+
+        return JsonResponse({"nombre_servidor": server.get().name_server}, status=200)
 
 
 @login_required
