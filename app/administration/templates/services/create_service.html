@@ -34,6 +34,10 @@
         <input type="number" name="capacity" class="form-control" id="capacity" required>
     </div>
     <div class="mb-3">
+        <label for="ip" class="form-label">Uso (GB) </label>
+        <input type="number" name="use" class="form-control" id="use" required>
+    </div>
+    <div class="mb-3">
         <label for="percent" class="form-label">Porcentaje alerta</label>
         <input type="number" name="percent" class="form-control" id="percent" required>
     </div>
@@ -84,6 +88,13 @@
         if (capacidad.value > 1000) {
             e.preventDefault();
             alert("Recuerde que la capacidad maxima es de 1000 GB")
+        }
+        // Validacion el uso no debe de superar la capacidad
+        var use = document.getElementById("use")
+        console.log("use.value", use.value)
+        if (use.value > capacidad.value) {
+            e.preventDefault();
+            alert("El uso no debe de superar la capacidad")
         }
 
         // validacion no se permite el porcentaje mayor a 100

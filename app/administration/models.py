@@ -35,6 +35,7 @@ class Server(models.Model):
 class Service(models.Model):
     name_service = models.CharField(verbose_name="Nombre servicio", max_length=255)
     capacity = models.IntegerField()
+    use = models.IntegerField()
     percent = models.IntegerField(default=0)
 
     server = models.ForeignKey(Server, on_delete=models.CASCADE)

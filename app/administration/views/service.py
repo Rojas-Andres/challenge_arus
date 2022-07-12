@@ -40,11 +40,13 @@ def create_service(request):
     capacity = request.POST["capacity"]
     percent = request.POST["percent"]
     ip_server = request.POST["ipServer"]
+    use = request.POST["use"]
     server = Server.objects.filter(ip_server=ip_server)
     new_service = Service.objects.create(
         name_service=name_service,
         capacity=capacity,
         percent=percent,
+        use=use,
         server_id=server.get().id,
     )
     new_service.save()

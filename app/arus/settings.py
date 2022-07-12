@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,7 +76,8 @@ WSGI_APPLICATION = "arus.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+env_path = Path(".") / ".env"
+load_dotenv(dotenv_path=env_path)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -127,6 +129,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+env_path = ".env"
+load_dotenv(dotenv_path=env_path)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = "/"
+
+# Configuracion gmail
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_USE_TLS = True  # Autenticacion
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = os.environ.get("email", "")
+# EMAIL_HOST_PASSWORD = os.environ.get("password", "")
+
+# Configuracion Outlook
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp-mail.outlook.com"
+EMAIL_HOST_USER = os.environ.get("email", "")
+EMAIL_HOST_PASSWORD = os.environ.get("password", "")
