@@ -88,3 +88,30 @@ IP address 192.168.1.20 is valid. la funcion retorna True
 
 # Ejecutar comando que envia correo a los clientes que tienen servicios que superan el umbral
     docker-compose run app python3 manage.py validate_services
+
+# Interfaces
+
+### Inicial
+   ![](imagenes/interfaces/inicial.PNG)
+
+### Login
+   ![](imagenes/interfaces/login.PNG)
+
+### Logueado 
+
+   ![](imagenes/interfaces/luego_login.PNG)
+
+### Interfaz gestionar clientes
+
+   ![](imagenes/interfaces/interfaz_gestionar_clientes.PNG)
+
+### Interfaz Crear cliente
+   ![](imagenes/interfaces/interfaz_crear_cliente.PNG)
+
+### Interfaz Mostrar clientes
+
+   ![](imagenes/interfaces/mostrar_clientes.PNG)
+
+### Interfaz Interfaz gestionar servidores
+
+   ![](imagenes/interfaces/gestionar_servidores.PNG)
