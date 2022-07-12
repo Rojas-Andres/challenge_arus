@@ -28,5 +28,10 @@ urlpatterns = [
     # Services
     path("create_service/", service.create_service, name="create_service"),
     path("show_all_service/", service.show_all_service, name="show_all_service"),
-    path("update_service/<int:id_service>", service.update_service, name="update_service"),
+    path(
+        "update_service/<int:id_service>", service.update_service, name="update_service"
+    ),
+    path(
+        "delete_service/<int:id_service>", service.delete_service, name="delete_service"
+    ),
 ]

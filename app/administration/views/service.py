@@ -98,3 +98,12 @@ def update_service(request, id_service=None):
     service.save()
 
     return redirect("servers")
+
+
+@login_required
+@api_view(["GET"])
+def delete_service(request, id_service=None):
+    service = Service.objects.filter(id=id_service).first()
+    if request.method == "GET":
+        service.delete()
+        return redirect("servers")
