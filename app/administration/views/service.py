@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.decorators import api_view
 from administration.models import Server, Client, Service
 from django.contrib.auth.decorators import login_required
-from administration.utils import validate_ip_address
+from administration.utils import validate_ip_address, service_filter
 from django.http import JsonResponse
 from administration.serializers import ServiceSerializer
 
@@ -73,24 +73,28 @@ def show_all_service(request):
     return render(request, "services/show_all_services.html", {"data": services})
 
 
-# # @login_required
-# # @api_view(["GET", "POST"])
-# # def update_client(request, id_client=None):
-# #     client = Client.objects.filter(id=id_client).first()
-# #     data = {"nameClient": client.name_client, "nit": client.nit, "id": client.id}
-# #     if request.method == "GET":
-# #         return render(
-# #             request,
-# #             "clients/update_client.html",
-# #             data,
-# #         )
-# #     nit = request.POST["nit"]
-# #     if len(nit) > 9:
-# #         data["msj"] = "El nit no puede tener mas de 9 digitos"
-# #         data["alert"] = "danger"
-# #         return render(request, "clients/update_client.html", data)
-# #     client.nit = nit
-# #     client.name_client = request.POST["nameClient"]
-# #     client.save()
+# Falta implementar el comando que ejecuta las validaciones
 
-# #     return redirect("show_clients")
+
+@login_required
+@api_view(["GET", "POST"])
+def update_service(request, id_service=None):
+
+    if request.method == "GET":
+        data_service = service_filter(id_service)
+        return render(
+            request,
+            "services/update_service.html",
+            data_service,
+        )
+    # Obtener id server
+    ip_server = request.POST["ipServer"]
+    server = Server.objects.filter(ip_server=ip_server)
+    service = Service.objects.filter(id=id_service).get()
+    service.name_service = request.POST["nameService"]
+    service.capacity = request.POST["capacity"]
+    service.percent = request.POST["percent"]
+    service.server_id = server.get().id
+    service.save()
+
+    return redirect("servers")

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p>Su cuenta no tiene acceso a esta página. Para proceder,
+    inicie sesión con una cuenta que tenga acceso.</p>
+{% else %}
+<p>Inicia sesión para ver esta página.</p>
+{% endif %}
+{% endif %}
+{% if msj %}
+<h1></h1>
+<div class="alert alert-{{alert}} alert-dismissible fade show" role="alert">
+    <strong>{{msj}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{{data}}
+<h3>Actualizar Servidor</h3>
+<form method="POST" action="{% url 'update_service' id_service=id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="nameService" class="form-label">Nombre Servicio</label>
+        <input type="text" name="nameService" class="form-control" value="{{nameService}}" id="nameService" required>
+    </div>
+    <div class="mb-3">
+        <label for="capacity" class="form-label">Capacidad</label>
+        <input type="text" name="capacity" class="form-control" value="{{capacity}}" id="capacity" required>
+    </div>
+    <div class="mb-3">
+        <label for="percent" class="form-label">Porcentaje</label>
+        <input type="text" name="percent" class="form-control" value="{{percent}}" id="percent" required>
+    </div>
+    <div class="mb-3">
+        <label for="ipServer" class="form-label">IP server</label>
+        <input type="text" name="ipServer" class="form-control" value="{{ip_server}}" id="ipServer" required>
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre servidor</label>
+        <input type="text" name="nameServer" class="form-control" id="nameServer" value="{{nameServer}}" readonly
+            required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="updateService">Actualizar servicio</button>
+</form>
+
+<a href="/management/server/">Regresar</a>
+{% endblock %}
+
+{% block script %}
+<script>
+    $("#ipServer").change(function (e) {
+        e.preventDefault();
+        var ipserver = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'validate_server' %}",
+            data: { "ipServer": ipserver },
+            success: function (response) {
+                $('#nameServer').val(response["nombre_servidor"])
+
+            },
+            error: function (response) {
+                $('#nameServer').val("")
+                alert('No se encontró la direccion IP ' + ipserver + '. Por favor verifique!')
+            }
+        })
+    })
+    $("#updateService").click(function (e) {
+
+        //Validacion encontro el servidor
+        var nameServer = document.getElementById("nameServer")
+        if (nameServer.value.length == 0) {
+            e.preventDefault();
+            alert("No se encontro el servidor por lo tanto no se crea el servicio")
+        }
+
+        // Validacion no se permite que se supere 1000 GB
+        var capacidad = document.getElementById("capacity")
+        if (capacidad.value > 1000) {
+            e.preventDefault();
+            alert("Recuerde que la capacidad maxima es de 1000 GB")
+        }
+
+        // validacion no se permite el porcentaje mayor a 100
+        var percent = document.getElementById("percent")
+        if (percent.value > 100) {
+            e.preventDefault();
+            alert("Recuerde que el porcentaje de alerta no puede ser mayor a 100")
+        }
+    })
+</script>
+{% endblock %}

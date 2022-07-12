@@ -43,7 +43,9 @@
             <tr>
                 <th>Nombre servicio</th>
                 <th>Capacidad</th>
-                <th>Porcentaje</th>
+                <th>Porcentaje de alerta</th>
+                <th>Actualizar</th>
+                <th>Eliminar</th>
             </tr>
         </thead>
     </table>
@@ -53,7 +55,7 @@
 
 {% endblock %}
 {% block script %}
-<script>
+<script type="text/javascript">
 
     $("#ipServer").change(function (e) {
         e.preventDefault();
@@ -124,7 +126,9 @@
             "columns": [
                 { "data": "name_service" },
                 { "data": "capacity" },
-                { "data": "percent" }
+                { "data": "percent" },
+                { "data": "id", render: function (dataField) { return '<a href="{% url "update_service" id_service=1111 %}" id="btnIdCodigo" class="btn btn-info btn-small" style="font-size: 0.7rem;">Actualizar</a>'.replace("1111", dataField); } },
+                { "data": "id", render: function (dataField) { return '<a href="{% url "update_server" id_server=1111 %}" id="btnIdCodigo" class="btn btn-info btn-small" style="font-size: 0.7rem;">Eliminar</a>'.replace("1111", dataField); } }
 
             ], select: true,
             lengthMenu: [
@@ -139,6 +143,7 @@
         });
 
     }
+
 
 </script>
 {% endblock %}
