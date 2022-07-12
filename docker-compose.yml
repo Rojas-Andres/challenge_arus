@@ -1,17 +1,15 @@
 version: "3.7"
 services:
   db:
-    container_name: postgresql_db
     image: postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - PGDATA=${PGDATA}
+      - POSTGRES_NAME=${DB_NAME}
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     restart: "unless-stopped"
   pgadmin:
     image: dpage/pgadmin4
@@ -27,17 +25,19 @@ services:
       - db
 
   app:
-    build:
-      context: .
-      dockerfile: app/Dockerfile
+    build: ./app
     environment:
       - PYTHONUNBUFFERED=1
-      - PIPENV_DONT_LOAD_ENV=1
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - email=${email}
+      - password=${password}
     restart: "unless-stopped"
     ports:
       - "3000:3000"
     depends_on:
       - db
 volumes:
-  db-data:
+  pgdata:
   pgadmin-data:

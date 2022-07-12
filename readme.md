@@ -1,4 +1,4 @@
-Crear un superusuario para iniciar sesion
+Crear un superusuario para iniciar sesion en localhost sin docker
 python manage.py createsuperuser
 
 # Validaciones
@@ -31,3 +31,34 @@ IP address 10.10.10.01 is valid. la funcion retorna True
 IP address 10.10.10.300 ,la funcion retorna False
 IP address 10.260.10.300 ,la funcion retorna False
 IP address 192.168.1.20 is valid. la funcion retorna True 
+
+# Se crea un envio de correo en el caso de que el uso del servicio supere el umbral , para ello seguir las siguientes instrucciones
+    - Crear un archivo .env en la carpeta app/ , esta seria la ruta relativa app\.env
+    - Dentro de ese archivo configurar el correo y la contraseña de la siguiente manera
+    email=######@####.###
+    password=#####
+
+# Eliminar todas las imagenes,volumes
+
+    docker system prune -f
+    Eliminar imagenes menor a 48 horas
+    docker image prune --all --filter until=48h
+
+    Eliminar todos los volumes
+    docker volume rm $(docker volume ls -q)
+
+# Entrar a pgadmin 
+
+
+# Diagramas 
+
+
+# Ejecutar migraciones en el docker
+    docker-compose run app python3 manage.py makemigrations
+    docker-compose run app python3 manage.py migrate
+
+# Crear un usuario para poder entrar al login 
+    docker-compose run app python3 manage.py createsuperuser
+
+# Ejecutar comando que envia correo a los clientes que tienen servicios que superan el umbral
+    docker-compose run app python3 manage.py validate_services
