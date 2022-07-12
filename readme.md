@@ -15,7 +15,7 @@ python manage.py createsuperuser
 # Service
     - Validacion de porcentaje no puede ser mayor a 100
     - Validacion de capacidad lo maximo que se permite es de 1000 GB
-    
+    - Validacion el uso no puede superar la capacidad
 
 ## Ejemplos de ip validas
 
@@ -46,6 +46,11 @@ IP address 192.168.1.20 is valid. la funcion retorna True
     Eliminar todos los volumes
     docker volume rm $(docker volume ls -q)
 
+# Correr contenedores
+
+    - docker-compose build
+    - docker-compose up
+
 # Entrar a pgadmin 
 
    ![](imagenes/conexion_pgadmin/login.png)
@@ -55,6 +60,7 @@ IP address 192.168.1.20 is valid. la funcion retorna True
    ![](imagenes/conexion_pgadmin/db_1.png)
 
    ![](imagenes/conexion_pgadmin/db_2.png)
+
 ## Diagramas
 
 ![](imagenes/1.PNG)
