@@ -59,10 +59,10 @@ def create_server(request):
         name_server=nombre, ip_server=ip, client_id=client.id
     )
     new_server.save()
-    context["msj"] = "Cliente creado correctamente"
+    context["msj"] = "Servidor creado correctamente"
     context["alert"] = "success"
 
-    return render(request, "clients/create_client.html", {"context": context})
+    return render(request, "servers/create_server.html", {"context": context})
 
 
 def validate_server(request):

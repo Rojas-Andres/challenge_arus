@@ -9,7 +9,13 @@ python manage.py createsuperuser
 
 ## Server
     - Validacion de ip
+    - Al crear un servidor no este otro servidor con la misma ip
+    - Al actualizar la ip del servidor no este otro server con esa ip
 
+# Service
+    - Validacion de porcentaje no puede ser mayor a 100
+    - Validacion de capacidad lo maximo que se permite es de 1000 GB
+    
 
 ## Ejemplos de ip validas
 

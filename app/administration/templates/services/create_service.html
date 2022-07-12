@@ -30,7 +30,7 @@
         <input type="text" name="nameService" class="form-control" id="nameService" required>
     </div>
     <div class="mb-3">
-        <label for="ip" class="form-label">Capacidad</label>
+        <label for="ip" class="form-label">Capacidad (GB) </label>
         <input type="number" name="capacity" class="form-control" id="capacity" required>
     </div>
     <div class="mb-3">
@@ -72,12 +72,26 @@
 
     $("#createService").click(function (e) {
 
+        //Validacion encontro el servidor
         var nameServer = document.getElementById("nameServer")
         if (nameServer.value.length == 0) {
             e.preventDefault();
             alert("No se encontro el servidor por lo tanto no se crea el servicio")
         }
 
+        // Validacion no se permite que se supere 1000 GB
+        var capacidad = document.getElementById("capacity")
+        if (capacidad.value > 1000) {
+            e.preventDefault();
+            alert("Recuerde que la capacidad maxima es de 1000 GB")
+        }
+
+        // validacion no se permite el porcentaje mayor a 100
+        var percent = document.getElementById("percent")
+        if (percent.value > 100) {
+            e.preventDefault();
+            alert("Recuerde que el porcentaje de alerta no puede ser mayor a 100")
+        }
     })
 </script>
 {% endblock %}
